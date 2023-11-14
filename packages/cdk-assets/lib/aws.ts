@@ -1,5 +1,6 @@
 import * as os from 'os';
-
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ECRClient } from '@aws-sdk/client-ecr';
 /**
  * AWS SDK operations required by Asset Publishing
  */
@@ -10,7 +11,7 @@ export interface IAws {
 
   discoverTargetAccount(options: ClientOptions): Promise<Account>;
   s3Client(options: ClientOptions): Promise<AWS.S3>;
-  ecrClient(options: ClientOptions): Promise<AWS.ECR>;
+  ecrClient(options: ClientOptions): Promise<ECRClient>;
   secretsManagerClient(options: ClientOptions): Promise<AWS.SecretsManager>;
 }
 
@@ -68,7 +69,7 @@ export class DefaultAwsClient implements IAws {
   }
 
   public async ecrClient(options: ClientOptions) {
-    return new this.AWS.ECR(await this.awsOptions(options));
+    return new ECRClient(await this.awsOptions(options));
   }
 
   public async secretsManagerClient(options: ClientOptions) {
