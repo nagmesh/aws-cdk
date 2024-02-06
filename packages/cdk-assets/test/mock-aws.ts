@@ -1,8 +1,15 @@
+const mockEcr = { describeRepositories: jest.fn(), getAuthorizationToken: jest.fn() };
 jest.mock('aws-sdk');
+jest.mock('@aws-sdk/client-ecr', () => {
+  return {
+    ECRClient: jest.fn().mockImplementation(() => {
+      return mockEcr;
+    }),
+  };
+});
 import * as AWS from 'aws-sdk';
 
 export function mockAws() {
-  const mockEcr = new AWS.ECR();
   const mockS3 = new AWS.S3();
   const mockSecretsManager = new AWS.SecretsManager();
 
